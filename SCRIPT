@@ -1,0 +1,53 @@
+// Predefined user credentials
+const users = {
+  "john": "1234",
+  "alice": "pass123",
+  "admin": "admin"
+};
+
+let balance = 0;
+
+function login() {
+  const username = document.getElementById("username").value.trim();
+  const password = document.getElementById("password").value.trim();
+  const loginMessage = document.getElementById("login-message");
+
+  if (users[username] && users[username] === password) {
+    document.getElementById("login-section").classList.add("hidden");
+    document.getElementById("bank-section").classList.remove("hidden");
+    document.querySelector("#bank-section h2").textContent = `Welcome, ${username}`;
+    loginMessage.textContent = "";
+  } else {
+    loginMessage.textContent = "Invalid username or password.";
+  }
+}
+
+function deposit() {
+  const amount = parseFloat(document.getElementById("amount").value);
+  if (isNaN(amount) || amount <= 0) {
+    document.getElementById("bank-message").textContent = "Enter a valid deposit amount.";
+    return;
+  }
+  balance += amount;
+  updateBalance();
+}
+
+function withdraw() {
+  const amount = parseFloat(document.getElementById("amount").value);
+  if (isNaN(amount) || amount <= 0) {
+    document.getElementById("bank-message").textContent = "Enter a valid withdrawal amount.";
+    return;
+  }
+  if (amount > balance) {
+    document.getElementById("bank-message").textContent = "Insufficient funds.";
+    return;
+  }
+  balance -= amount;
+  updateBalance();
+}
+
+function updateBalance() {
+  document.getElementById("balance").textContent = balance.toFixed(2);
+  document.getElementById("bank-message").textContent = "Transaction successful!";
+  document.getElementById("amount").value = "";
+}
